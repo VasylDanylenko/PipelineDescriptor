@@ -4,16 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.pipeline.PipelineDescriptor;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import static java.lang.String.format;
 
 public class PipelineDescriptorParser {
-    public PipelineDescriptor parsePipelineDescriptor(String jsonResourcePath) {
-        try (InputStream inputStream = PipelineDescriptorParser.class.getResourceAsStream(jsonResourcePath)) {
-            return new ObjectMapper().readValue(inputStream, PipelineDescriptor.class);
+    public PipelineDescriptor parsePipelineDescriptor(String json) {
+        try {
+            return new ObjectMapper().readValue(json, PipelineDescriptor.class);
         } catch (IOException exception) {
-            String errorMessage = format("Failed from JSON: %s. Reason: %s", jsonResourcePath, exception.getMessage());
+            String errorMessage = format("Failed to parse JSON. Reason: %s", exception.getMessage());
             throw new RuntimeException(errorMessage, exception);
         }
     }
